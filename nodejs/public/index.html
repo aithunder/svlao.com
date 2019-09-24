@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Xác thực thông tin sinh viên</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<style>
+  .panel {
+    display: none;
+  }
+
+  .table {
+    margin: 0;
+  }
+</style>
+
+<body>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Xác thực thông tin sinh viên</a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Tra cứu</a></li>
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Tin tức
+              <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Cao đẳng</a></li>
+              <li><a href="#">Đại học</a></li>
+              <li><a href="#">Thạc sỹ</a></li>
+            </ul>
+          </li>
+          <li><a href="#">Liên hệ</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <!-- <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li> -->
+          <li><a href="dang-nhap.html"><span class="glyphicon glyphicon-log-in"></span> Đăng nhập</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!--  -->
+
+  <div class="container">
+    <br>
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2">
+        <form onsubmit="searchStudent(event);">
+          <div class="input-group">
+            <span class="input-group-addon">Mã sinh viên</span>
+            <input id="masv" type="text" class="form-control" name="masv" placeholder="Nhập vào mã sinh viên">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="submit">Tra cứu</button>
+            </span>
+          </div>
+        </form>
+      </div>
+    </div>
+    <br>
+    <br>
+
+    <div class="row">
+      <div class="col-lg-6 col-lg-offset-1">
+        <div class="panel panel-default">
+          <div class="panel-heading">Thông tin sinh viên</div>
+          <div class="panel-body" style="padding: 0;">
+            <div class="table-responsive">
+              <table class="table">
+                <tbody>
+                  <tr>
+                    <td>Tên sinh viên</td>
+                    <td id="ten-sv">Tên sinh viên</td>
+                  </tr>
+                  <tr>
+                    <td>Ngày sinh</td>
+                    <td id="ngay-sinh">Ngày sinh</td>
+                  </tr>
+                  <tr>
+                    <td>Trường</td>
+                    <td id="truong">Trường</td>
+                  </tr>
+                  <tr>
+                    <td>Cấp học</td>
+                    <td id="cap-hoc">Cấp học</td>
+                  </tr>
+                  <tr>
+                    <td>Ngành học</td>
+                    <td id="nganh-hoc">Ngành học</td>
+                  </tr>
+                  <tr>
+                    <td>Khóa học</td>
+                    <td id="khoa-hoc">Khóa học</td>
+                  </tr>
+                  <tr>
+                    <td>Kí túc xá</td>
+                    <td id="ki-tuc-xa">Kí túc xá</td>
+                  </tr>
+                  <tr>
+                    <td>Loại học bổng</td>
+                    <td id="loai-hoc-bong">Loại học bổng</td>
+                  </tr>
+                  <tr>
+                    <td>Năm học</td>
+                    <td id="nam-hoc">Năm học</td>
+                  </tr>
+                  <tr>
+                    <td>Số thông tư bên Lào</td>
+                    <td id="so-thong-tu-lao">Số thông tư bên Lào</td>
+                  </tr>
+                  <tr>
+                    <td>Số thông tư bên Việt Nam</td>
+                    <td id="so-thong-tu-vn">Số thông tư bên Việt Nam</td>
+                  </tr>
+                  <tr>
+                    <td>Số điện thoại</td>
+                    <td id="so-dien-thoai">Số điện thoại</td>
+                  </tr>
+                  <tr>
+                    <td>Email</td>
+                    <td id="email">Email</td>
+                  </tr>
+                  <tr>
+                    <td>Công việc chính thức</td>
+                    <td id="cong-viec">Công việc chính thức</td>
+                  </tr>
+                  <tr>
+                    <td>Năm nhập học</td>
+                    <td id="nam-nhap-hoc">Năm nhập học</td>
+                  </tr>
+                  <tr>
+                    <td>Năm kết thúc</td>
+                    <td id="nam-ket-thuc">Năm kết thúc</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="panel panel-default">
+          <div class="panel-heading">Kết quả học tập</div>
+          <div class="panel-body" style="padding: 0;">
+            <div class="table-responsive">
+              <table class="table" id="table-diem">
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</body>
+
+<script src="./js/server-url.js"></script>
+
+<script>
+  function showResult() {
+    var arrPanel = $(".panel");
+    for (let i = 0; i < arrPanel.length; i++) {
+      arrPanel[i].style.display = "block";
+    }
+  }
+
+  function searchStudent(event) {
+    event.preventDefault();
+
+    fetch(SERVER_URL + "/ethereum/student?id=" + $("#masv").val()).then(response => {
+      response.json().then(result => {
+        if (!result.student.name) {
+          alert("Mã sinh viên không tồn tại trong hệ thống");
+          return;
+        }
+        searchMark();
+        if (response.status == 200) showResult();
+        $("#ten-sv").html(result.student.name);
+        $("#ngay-sinh").html(result.student.birth);
+        $("#truong").html(result.student.school);
+        $("#cap-hoc").html(result.student.level);
+        $("#nganh-hoc").html(result.student.majors);
+        $("#khoa-hoc").html(result.student.course);
+        $("#ki-tuc-xa").html(result.detail.dormitory);
+        $("#loai-hoc-bong").html(result.detail.scholarshipType);
+        $("#nam-hoc").html(result.student.year);
+        $("#so-thong-tu-lao").html(result.detail.laosCirculars);
+        $("#so-thong-tu-vn").html(result.detail.vnCirculars);
+        $("#so-dien-thoai").html(result.student.phone);
+        $("#email").html(result.student.email);
+        $("#cong-viec").html(result.detail.mainJob);
+        $("#nam-nhap-hoc").html(result.detail.admissionYear);
+        $("#nam-ket-thuc").html(result.detail.endYear);
+      });
+    });
+  }
+
+
+  function searchMark() {
+    fetch(SERVER_URL + "/ethereum/mark?id=" + $("#masv").val()).then(response => {
+      response.json().then(result => {
+        let content = "";
+        result.forEach(element => {
+          content += `<tr>
+              <td>`+ element.subjectName + `</td>
+              <td>`+ element.value + `</td>
+            </tr>`;
+        });
+        $("#table-diem").find("tbody").html(content);
+      });
+    });
+  }
+</script>
+
+</html>

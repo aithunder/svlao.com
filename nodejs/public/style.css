@@ -1,0 +1,7 @@
+* { box-sizing: border-box; }
+body { margin: 0 auto; }
+
+/* topbar */
+.topbar { background-color: #03A9F4; color: white; }
+.topbar__nav { display: flex; flex-direction: row; }
+.nav__container { display: flex; flex-direction: column; }
