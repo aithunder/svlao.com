@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Quản lý thông tin sinh viên</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+</head>
+
+<body>
+  <div class="wrapper">
+    <!-- topbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="javascript:void(0);">Quản lý thông tin sinh viên</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="http://svlao.com">Trang chủ</a></li>
+            <li><a href="/index.html">Tra cứu sinh viên</a></li>
+            <li><a href="/user.html">Quản lý người dùng</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- content -->
+    <div class="container" style="margin-top: 100px;">
+      <!-- show total student in system -->
+      <h3 id="tong-sinh-vien"></h3>
+      <div class="row">
+        <!-- set student -->
+        <div class="col-lg-6">
+          <div class="panel panel-info">
+            <div class="panel-heading">Thông tin cơ bản</div>
+
+            <div class="panel-body">
+              <form onsubmit="setStudent(event);">
+                <div class="form-group">
+                  <label for="student-masv">Mã sinh viên:</label>
+                  <input type="text" class="form-control" id="student-masv">
+                </div>
+                <div class="form-group">
+                  <label for="student-ten">Họ và tên:</label>
+                  <input type="text" class="form-control" id="student-ten">
+                </div>
+                <div class="form-group">
+                  <label for="student-ngay-sinh">Ngày sinh:</label>
+                  <input type="text" class="form-control" id="student-ngay-sinh">
+                </div>
+                <div class="form-group">
+                  <label for="student-truong">Trường:</label>
+                  <input type="text" class="form-control" id="student-truong">
+                </div>
+                <div class="form-group">
+                  <label for="student-cap-hoc">Cấp học:</label>
+                  <input type="text" class="form-control" id="student-cap-hoc">
+                </div>
+                <div class="form-group">
+                  <label for="student-nganh">Ngành học:</label>
+                  <input type="text" class="form-control" id="student-nganh">
+                </div>
+                <div class="form-group">
+                  <label for="student-khoa-hoc">Khóa học:</label>
+                  <input type="text" class="form-control" id="student-khoa-hoc">
+                </div>
+                <div class="form-group">
+                  <label for="student-nam-hoc">Năm học:</label>
+                  <input type="text" class="form-control" id="student-nam-hoc">
+                </div>
+                <div class="form-group">
+                  <label for="student-sdt">Số điện thoại:</label>
+                  <input type="text" class="form-control" id="student-sdt">
+                </div>
+                <div class="form-group">
+                  <label for="student-email">Email:</label>
+                  <input type="text" class="form-control" id="student-email">
+                </div>
+                <button type="submit" class="btn btn-info">Lưu</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- set detail student -->
+        <div class="col-lg-6">
+          <div class="panel panel-info">
+            <div class="panel-heading">Thông tin chi tiết</div>
+
+            <div class="panel-body">
+              <form onsubmit="setStudentDetail(event);">
+                <div class="form-group">
+                  <label for="student-masv">Mã sinh viên:</label>
+                  <input type="text" class="form-control" id="student-masv">
+                </div>
+                <div class="form-group">
+                  <label for="student-ktx">Kí túc xá:</label>
+                  <input type="text" class="form-control" id="student-ktx">
+                </div>
+                <div class="form-group">
+                  <label for="student-loai-hoc-bong">Loại học bổng:</label>
+                  <input type="text" class="form-control" id="student-loai-hoc-bong">
+                </div>
+                <div class="form-group">
+                  <label for="student-thong-tu-lao">Số thông tư bên Lào:</label>
+                  <input type="text" class="form-control" id="student-thong-tu-lao">
+                </div>
+                <div class="form-group">
+                  <label for="student-thong-tu-vn">Số thông tư bên Việt Nam:</label>
+                  <input type="text" class="form-control" id="student-thong-tu-vn">
+                </div>
+                <div class="form-group">
+                  <label for="student-cong-viec">Công việc chính thức:</label>
+                  <input type="text" class="form-control" id="student-cong-viec">
+                </div>
+                <div nam-nhap-hocclass="form-group">
+                  <label nam-ket-thucfor="student-nam-nhap-hoc">Năm nhập học:</label>
+                  <input type="text" class="form-control" id="student-nam-nhap-hoc">
+                </div>
+                <div class="form-group">
+                  <label for="student-nam-ket-thuc">Năm kết thúc:</label>
+                  <input type="text" class="form-control" id="student-nam-ket-thuc">
+                </div>
+                <div class="form-group">
+                  <label for="student-ghi-chu">Ghi chú:</label>
+                  <input type="text" class="form-control" id="student-ghi-chu">
+                </div>
+                <button type="submit" class="btn btn-info">Lưu</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- set mark -->
+        <div class="col-lg-6">
+          <div class="panel panel-info">
+            <div class="panel-heading">Điểm môn học</div>
+
+            <div class="panel-body">
+              <form onsubmit="setMark(event);">
+                <div class="form-group">
+                  <label for="mark-masv">Mã sinh viên:</label>
+                  <input type="mark-masv" class="form-control" id="mark-masv">
+                </div>
+                <div class="form-group">
+                  <label for="mark-mon-hoc">Môn học:</label>
+                  <select class="form-control" id="mark-mon-hoc">
+                    <option value="01W">Lập trình web</option>
+                    <option value="02C">Lập trình C</option>
+                    <option value="03J">Lập trình Java</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="mark-diem">Điểm:</label>
+                  <input type="number" class="form-control" id="mark-diem">
+                </div>
+                <button type="submit" class="btn btn-info">Lưu</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</body>
+
+<script src="js/web3.js"></script>
+<script src="js/smart-contract.js"></script>
+<script src="js/sweetalert.min.js"></script>
+
+<script>
+  // global variable:
+  var currentUser = "";
+
+  // init web3 provider:
+  if (typeof (web3) !== 'undefined') {
+    web3 = new Web3(web3.currentProvider);
+    ethereum.enable();  // require user accept Metamask rule
+    console.log(new Date().toLocaleString() + ' -> User metamask as web3 provider');
+  }
+  else {
+    swal("Máy bạn chưa có Metamask, cài đặt Metamask để đăng nhập vào hệ thống")
+      .then((value) => {
+        window.open("https://metamask.io/", "_blank");
+      });
+  }
+
+  // init smart contract instance:
+  const CONTRACT = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
+
+  // get current account:
+  web3.eth.getCoinbase(function (err, coinbase) {
+    currentUser = coinbase;
+  });
+
+  // set student:
+  function setStudent(event) {
+    event.preventDefault();
+    
+    let id = $("#student-masv").val();
+    let name = $("#student-ten").val();
+    let birth = $("#student-ngay-sinh").val();
+    let school = $("#student-truong").val();
+    let level = $("#student-cap-hoc").val();
+    let major = $("#student-nganh").val();
+    let course = $("#student-khoa-hoc").val();
+    let year = $("#student-nam-hoc").val();
+    let phone = $("#student-sdt").val();
+    let email = $("#student-email").val();
+
+    CONTRACT.methods.setStudent(id, name, birth, school, level, major, course, year, phone, email)
+      .send({ from: currentUser })
+      .on("confirmation", function () {
+        // clear textbox:
+        $("#student-masv").val("");
+        $("#student-ten").val("");
+        $("#student-ngay-sinh").val("");
+        $("#student-truong").val("");
+        $("#student-cap-hoc").val("");
+        $("#student-nganh").val("");
+        $("#student-khoa-hoc").val("");
+        $("#student-nam-hoc").val("");
+        $("#student-sdt").val("");
+        $("#student-email").val("");
+        // reload new data:
+        getTotalStudent();
+        // notify to user:
+        swal("Thành công", "", "success");
+      });
+  }
+
+  // set student detail:
+  function setStudentDetail(event) {
+    event.preventDefault();
+
+    let id = $("#student-masv").val();
+    let domitory = $("#student-ktx").val();
+    let scholarshipType = $("#student-loai-hoc-bong").val();
+    let laoCirculars = $("#student-thong-tu-lao").val();
+    let vnCirculars = $("#student-thong-tu-vn").val();
+    let mainJob = $("#student-cong-viec").val();
+    let admissionYear = $("#student-nam-nhap-hoc").val();
+    let endYear = $("#student-nam-ket-thuc").val();
+    let note = $("#student-ghi-chu").val();
+
+    CONTRACT.methods.setStudent(id, domitory, scholarshipType, laoCirculars, vnCirculars, mainJob, admissionYear, endYear, note)
+      .send({ from: currentUser })
+      .on("confirmation", function () {
+        // clear textbox:
+        $("#student-masv").val("");
+        $("#student-ktx").val("");
+        $("#student-loai-hoc-bong").val("");
+        $("#student-thong-tu-lao").val("");
+        $("#student-thong-tu-vn").val("");
+        $("#student-cong-viec").val("");
+        $("#student-nam-nhap-hoc").val("");
+        $("#student-nam-ket-thuc").val("");
+        $("#student-ghi-chu").val("");
+        // reload new data:
+        getTotalStudent();
+        // notify to user:
+        swal("Thành công", "", "success");
+      });
+  }
+
+  // set mark:
+  function setMark(event) {
+    event.preventDefault();
+    
+    let studentId = $("#mark-masv").val();
+    let subjectId = $("#mark-mon-hoc option:selected").val();
+    let subjectName = $("#mark-mon-hoc option:selected").text();
+    let value = $("#mark-diem").val();
+
+    CONTRACT.methods.setMark(studentId, subjectId, subjectName, value)
+      .send({ from: currentUser })
+      .on("confirmation", function () {
+        // clear textbox:
+        studentId = $("#mark-masv").val("");
+        value = $("#mark-diem").val("");
+        // notify to user:
+        swal("Thành công", "", "success");
+      });
+  }
+
+  // show total student in system:
+  function getTotalStudent() {
+    CONTRACT.methods.countStudent().call().then(studentAmount => {
+      $("#tong-sinh-vien").html("Tổng số sinh viên: " + studentAmount);
+    });
+  }
+
+  getTotalStudent();
+</script>
+
+</html>

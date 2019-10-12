@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Quản lý người dùng</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+</head>
+
+<body>
+  <div class="wrapper">
+    <!-- topbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="javascript:void(0);">Quản lý người dùng</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="http://svlao.com">Trang chủ</a></li>
+            <li><a href="/index.html">Tra cứu sinh viên</a></li>
+            <li><a href="/student.html">Quản lý sinh viên</a></li>
+            <li><a href="javascript:void(0);" data-toggle="modal" data-target="#createUserModal">Thêm người dùng</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- content -->
+    <div class="container" style="margin-top: 100px;">
+
+      <!-- greeter -->
+      <h2 id="user-greeter"></h2><br>
+      <div class="row">
+
+        <!-- info of login user -->
+        <div class="col-lg-5">
+          <div class="panel panel-info">
+            <div class="panel-heading">Thông tin người dùng</div>
+
+            <div class="panel-body" style="padding: 0;">
+              <div class="table-responsive">
+                <table class="table table-responsive" id="current-user-info">
+                  <tbody>
+                    <tr>
+                      <td>Người dùng</td>
+                      <td>--</td>
+                    </tr>
+                    <tr>
+                      <td>Địa chỉ ví</td>
+                      <td>0x00000000000000000000000000000000</td>
+                    </tr>
+                    <tr>
+                      <td>Quyền</td>
+                      <td>--</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- list of user -->
+        <div class="col-lg-7">
+          <div class="panel panel-info">
+            <div class="panel-heading">Danh sách người dùng</div>
+
+            <div class="panel-body" style="padding: 0;">
+              <div class="table-responsive">
+                <table class="table" id="list-user">
+                  <thead>
+                    <tr>
+                      <th>Tên người dùng</th>
+                      <th>Địa chỉ ví</th>
+                      <th>Quyền</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- modal add user -->
+    <div id="createUserModal" class="modal fade" role="dialog">
+
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Thêm thông tin người dùng</h4>
+          </div>
+
+          <div class="modal-body">
+            <form class="form-horizontal">
+              <div class="form-group">
+                <label class="control-label col-sm-3" for="create-wallet">Địa chỉ ví:</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="create-wallet"
+                    placeholder="Địa chỉ tài khoản ví Ethereum">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-3" for="create-username">Tên người dùng:</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="create-username" placeholder="Tên người dùng">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-3" for="create-permission">Quyền:</label>
+                <div class="col-sm-9">
+                  <select class="form-control" id="create-permission">
+                    <option value=1>Readable</option>
+                    <option value=3>Writeable</option>
+                    <option value=7>Excutable</option>
+                  </select>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success" onclick="createUser();">Thêm</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Thoát</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- modal edit user -->
+    <div id="editUserModal" class="modal fade" role="dialog">
+
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Sửa thông tin người dùng</h4>
+          </div>
+
+          <div class="modal-body">
+            <form class="form-horizontal">
+              <div class="form-group">
+                <label class="control-label col-sm-3" for="edit-wallet">Địa chỉ ví:</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="edit-wallet" readonly
+                    placeholder="Địa chỉ tài khoản ví Ethereum">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-3" for="edit-username">Tên người dùng:</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="edit-username" placeholder="Tên người dùng">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-3" for="edit-permission">Quyền:</label>
+                <div class="col-sm-9">
+                  <select class="form-control" id="edit-permission">
+                    <option value=1>Readable</option>
+                    <option value=3>Writeable</option>
+                    <option value=7>Excutable</option>
+                  </select>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success" onclick="updateUser();">Cập nhật</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Thoát</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+<script src="js/web3.js"></script>
+<script src="js/smart-contract.js"></script>
+<script src="js/sweetalert.min.js"></script>
+
+<script>
+  // global variable:
+  var currentUser = "";
+  var selectedUser = {};
+
+  // init web3 provider:
+  if (typeof (web3) !== 'undefined') {
+    web3 = new Web3(web3.currentProvider);
+    ethereum.enable();  // require user accept Metamask rule
+    console.log(new Date().toLocaleString() + ' -> User metamask as web3 provider');
+    getCurrentUser();
+  }
+  else {
+    // require user isntall Metamask:
+    swal("Máy bạn chưa có Metamask, cài đặt Metamask để đăng nhập vào hệ thống")
+      .then((value) => {
+        window.open("https://metamask.io/", "_blank");
+      });
+  }
+
+  // init smart contract instance:
+  const CONTRACT = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
+
+  // convert user permission code to readable text:
+  function findPermission(permission) {
+    let userPermission = "";
+    switch (permission) {
+      case "1":
+        userPermission = "Readable";
+        break;
+      case "3":
+        userPermission = "Writeable";
+        break;
+      case "7":
+        userPermission = "Excutable";
+        break;
+      default:
+        userPermission = "None"
+    }
+    return userPermission;
+  }
+
+  // get current user:
+  function getCurrentUser() {
+    web3.eth.getCoinbase((err, result) => {
+      if (err)
+        swal("Chú ý", "Không tìm thấy tài khoản khả dụng, hãy chắn chắn bạn đã đăng nhập Metamask", "error");
+      else {
+        currentUser = result;
+        getUserByAddress(currentUser).then(result => {
+          if (result.username) {
+            $("#user-greeter").html("Xin chào " + result.username + "!");
+            let userPermission = findPermission(result.permission);
+            let tableContent = `<tr>
+                                  <td>Người dùng</td>
+                                  <td>${result.username}</td>
+                                </tr>
+                                <tr>
+                                  <td>Địa chỉ ví</td>
+                                  <td>${currentUser}</td>
+                                </tr>
+                                <tr>
+                                  <td>Quyền</td>
+                                  <td>${userPermission}</td>
+                                </tr>`;
+            $("#current-user-info").find("tbody").html(tableContent);
+          }
+          else {
+            swal("Chú ý", "Bạn chưa phải là thành viên của hệ thống", "warning");
+            $("#user-greeter").html("Tài khoản không xác định");
+          }
+        });
+      }
+    });
+  }
+
+  // show edit user modal:
+  function showEditUserModal(selectedUser) {
+    $("#edit-wallet").val(selectedUser.wallet);
+    $("#edit-username").val(selectedUser.username);
+    $("#edit-permission").val(selectedUser.permission);
+    $("#editUserModal").modal('show');
+  }
+
+  // get a user by address:
+  function getUserByAddress(userAddress) {
+    return new Promise((resolve, reject) => {
+      CONTRACT.methods.Users(userAddress).call().then(userInformation => {
+        resolve(userInformation);
+      });
+    });
+  }
+
+  // get a user by index:
+  function getUserByIndex(index) {
+    var data = {};
+    return new Promise((resolve, reject) => {
+      CONTRACT.methods.indexUser(index).call().then(userAddress => {
+        if (userAddress) {
+          data.wallet = userAddress;
+          getUserByAddress(userAddress).then(userInformation => {
+            data.username = userInformation.username;
+            data.permission = userInformation.permission;
+            resolve(data);
+          });
+        }
+      });
+    });
+  }
+
+  // get list user:
+  function getListUser() {
+    var arrayPromise = [];
+    var tableContent = "";
+    CONTRACT.methods.countUser().call().then(async totalUser => {
+      for (let i = 0; i < totalUser; i++) {
+        let tempPromise = await getUserByIndex(i);
+        arrayPromise.push(tempPromise);
+      }
+      Promise.all(arrayPromise).then(list => {
+        list.forEach(item => {
+          let userPermission = findPermission(item.permission);
+          tableContent += ` <tr>
+                              <td>${item.username}</td>
+                              <td><a href="javascript:void(0);" 
+                                onclick='showEditUserModal(${JSON.stringify(item)});'>${item.wallet}</a></td>
+                              <td>${userPermission}</td>
+                            </tr>`;
+        });
+        $("#list-user").find("tbody").html(tableContent);
+      });
+    });
+  }
+
+  // create user:
+  function createUser() {
+    let userwallet = $("#create-wallet").val();
+    let username = $("#create-username").val();
+    let userpermission = $("#create-permission").val();
+    console.log(userwallet, username, userpermission);
+    CONTRACT.methods.setUser(userwallet, username, userpermission).send({ from: currentUser })
+      .on("confirmation", () => {
+        // clear textbox:
+        $("#create-wallet").val("");
+        $("#create-username").val("");
+        $("#create-permission").val("");
+        // reload new data:
+        getListUser();
+        // notify to user:
+        swal("Thành công", "Thêm người dùng mới thành công", "success");
+        // then hide modal:
+        $("#createUserModal").modal('hide');
+      });
+  }
+
+  // do update user:
+  function updateUser() {
+    let userwallet = $("#edit-wallet").val();
+    let username = $("#edit-username").val();
+    let userpermission = $("#edit-permission").val();
+    console.log(userwallet, username, userpermission);
+    CONTRACT.methods.setUser(userwallet, username, userpermission).send({ from: currentUser })
+      .on("confirmation", () => {
+        // clear textbox:
+        $("#edit-wallet").val("");
+        $("#edit-username").val("");
+        $("#edit-permission").val("");
+        // reload new data:
+        getListUser();
+        // notify to user:
+        swal("Thành công", "Cập nhật thông tin người dùng thành công", "success");
+        // then hide modal:
+        $("#editUserModal").modal('hide');
+      });
+  }
+  
+  getListUser();
+</script>
+
+</html>

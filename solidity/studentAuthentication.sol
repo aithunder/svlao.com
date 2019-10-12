@@ -1,8 +1,14 @@
 pragma experimental ABIEncoderV2; // for using struct in function & this may create error, so if meet any error when deploying, check this first.
 pragma solidity ^0.5.3;
 
-contract TestDeploy {
-    address owner = address(0);     // init owner for this smart contract
+contract StudentManagement {
+    uint public countUser = 0;
+    uint public countStudent = 0;
+    
+    struct User {
+        string username;
+        uint permission;
+    }
     
     struct Student {
         string Name;
@@ -32,32 +38,46 @@ contract TestDeploy {
         string Value;
     }
     
+    mapping (uint => address) public indexUser;
+    mapping (address => User) public Users;
+    mapping (uint => string) public indexStudent;
     mapping (string => Student) Students;
     mapping (string => DetailStudent) DetailStudents;
     mapping (string => mapping(string => Subject)) Subjects;
     
     // event:
-    event savedStudent(
-        string studentId,
-        string studentName
-    );
-    event savedDetailStudent(
-        string studentId
-    );
-    event savedMark(
-        string studentId,
-        string subjectName,
-        string value
-    );
+    event CreatedUser(address wallet, string username, uint permission);
+    event UpdatedUser(address wallet, string username, uint permission);
+    event CreatedStudent(string studentId);
+    event UpdatedStudent(string studentId);
+    event CreatedDetailStudent(string studentId);
+    event UpdatedDetailStudent(string studentId);
+    event savedMark( string studentId, string subjectName, string value );
     
-    // only owner can act with data:
-    modifier onlyOwner() {
-        require (msg.sender == owner);
-        _;
-    }
+    // only user have writeable permission can do transaction:
+    modifier writeable() {
+		require(Users[msg.sender].permission == 3 || Users[msg.sender].permission == 7);
+		_;
+	}
+
+	modifier excutable() {
+		require(Users[msg.sender].permission == 7);
+		_;
+	}
     
     constructor() public {
-        owner = msg.sender;
+        indexUser[countUser++] = msg.sender;
+        Users[msg.sender] = User('admin', 7);
+    }
+    
+    function setUser(address wallet, string memory username, uint permission) excutable public {
+        // require(bytes(Users[wallet].username).length == 0);
+	    indexUser[countUser++] = wallet;
+	    Users[wallet] = User(username, permission);
+	    if (bytes(Users[wallet].username).length == 0)
+            emit CreatedUser(wallet, username, permission);
+        else
+            emit UpdatedUser(wallet, username, permission);
     }
     
     function setStudent(
@@ -70,8 +90,9 @@ contract TestDeploy {
         string memory course,
         string memory year,
         string memory phone,
-        string memory email) 
-        public onlyOwner {
+        string memory email
+    )public writeable {
+        indexStudent[countStudent++] = id;
         Students[id].Name = name;
         Students[id].Birth = birth;
         Students[id].School = school;
@@ -81,7 +102,10 @@ contract TestDeploy {
         Students[id].Year = year;
         Students[id].Phone = phone;
         Students[id].Email = email;
-        emit savedStudent(id, name);
+        if (bytes(Students[id].Name).length == 0)
+            emit CreatedStudent(id);
+        else
+            emit UpdatedStudent(id);
     }
     
     function setDetailStudent(
@@ -93,8 +117,8 @@ contract TestDeploy {
         string memory mainJob,
         string memory admissionYear,
         string memory endYear,
-        string memory note) 
-        public onlyOwner {
+        string memory note
+    ) public writeable {
         DetailStudents[id].Dormitory = dormitory;
         DetailStudents[id].ScholarshipType = scholarshipType;
         DetailStudents[id].LaosCirculars = laosCirculars;
@@ -103,7 +127,10 @@ contract TestDeploy {
         DetailStudents[id].AdmissionYear = admissionYear;
         DetailStudents[id].EndYear = endYear;
         DetailStudents[id].Note = note;
-        emit savedDetailStudent(id);
+        if (bytes(DetailStudents[id].Dormitory).length == 0)
+            emit CreatedDetailStudent(id);
+        else
+            emit UpdatedDetailStudent(id);
     }
     
     // get a student by their id:
@@ -136,7 +163,7 @@ contract TestDeploy {
     }
     
     // save new mark:
-    function setMark(string memory studentId, string memory subjectId, string memory subjectName, string memory value) public onlyOwner {
+    function setMark(string memory studentId, string memory subjectId, string memory subjectName, string memory value) public writeable {
         Subjects[studentId][subjectId] = Subject(subjectName, value);
         emit savedMark(studentId, subjectName, value);
     }

@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Xác thực thông tin sinh viên</title>
+  <title>Tra cứu thông tin sinh viên</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
@@ -26,27 +26,30 @@
 <body>
   <div class="wrapper">
 
-    <div class="header">
-      <div class="header-content clear-fix">
-        <div class="title-wrapper">
-          <span class="header-title">svlao.com</span>
-          <br>
-          <span class="header-subtitle">Stand for Sinh Vien Lao website for Laos students who studying in South
-            VN</span>
+    <!-- topbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="javascript:void(0);">Tra cứu thông tin sinh</a>
         </div>
-        <div id="top-navigation" class="header-navigation">
-          <a href="#">Home</a>
-          <a href="#">Contact</a>
-          <a href="#">List of student</a>
-          <a href="#">Login</a>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="http://svlao.com">Trang chủ</a></li>
+            <li><a href="http://svlao.com/?page_id=28">Liên hệ</a></li>
+            <li><a href="/student.html">Quản lý sinh viên</a></li>
+            <li><a href="/user.html">Quản lý người dùng</a></li>
+          </ul>
         </div>
-        <a href="javascript:void(0);" class="navigation-button" onclick="mobileMenu()">
-          <i class="fa fa-bars"></i>
-        </a>
       </div>
-    </div>
+    </nav>
 
-    <div class="content">
+    <!-- main content -->
+    <div class="content" style="margin-top: 100px;">
       <div class="container">
         <br>
         <div class="row">
@@ -56,7 +59,7 @@
                 <span class="input-group-addon">Mã sinh viên</span>
                 <input id="masv" type="text" class="form-control" name="masv" placeholder="Nhập vào mã sinh viên">
                 <span class="input-group-btn">
-                  <button class="btn btn-default" type="submit">Tra cứu</button>
+                  <button class="btn btn-default" type="submit">Tìm</button>
                 </span>
               </div>
             </form>
@@ -67,7 +70,7 @@
 
         <div class="row">
           <div class="col-lg-6 col-lg-offset-1">
-            <div class="panel panel-default">
+            <div class="panel panel-info">
               <div class="panel-heading">Thông tin sinh viên</div>
               <div class="panel-body" style="padding: 0;">
                 <div class="table-responsive">
@@ -98,24 +101,8 @@
                         <td id="khoa-hoc">Khóa học</td>
                       </tr>
                       <tr>
-                        <td>Kí túc xá</td>
-                        <td id="ki-tuc-xa">Kí túc xá</td>
-                      </tr>
-                      <tr>
-                        <td>Loại học bổng</td>
-                        <td id="loai-hoc-bong">Loại học bổng</td>
-                      </tr>
-                      <tr>
                         <td>Năm học</td>
                         <td id="nam-hoc">Năm học</td>
-                      </tr>
-                      <tr>
-                        <td>Số thông tư bên Lào</td>
-                        <td id="so-thong-tu-lao">Số thông tư bên Lào</td>
-                      </tr>
-                      <tr>
-                        <td>Số thông tư bên Việt Nam</td>
-                        <td id="so-thong-tu-vn">Số thông tư bên Việt Nam</td>
                       </tr>
                       <tr>
                         <td>Số điện thoại</td>
@@ -124,6 +111,22 @@
                       <tr>
                         <td>Email</td>
                         <td id="email">Email</td>
+                      </tr>
+                      <tr>
+                        <td>Kí túc xá</td>
+                        <td id="ki-tuc-xa">Kí túc xá</td>
+                      </tr>
+                      <tr>
+                        <td>Loại học bổng</td>
+                        <td id="loai-hoc-bong">Loại học bổng</td>
+                      </tr>
+                      <tr>
+                        <td>Số thông tư bên Lào</td>
+                        <td id="so-thong-tu-lao">Số thông tư bên Lào</td>
+                      </tr>
+                      <tr>
+                        <td>Số thông tư bên Việt Nam</td>
+                        <td id="so-thong-tu-vn">Số thông tư bên Việt Nam</td>
                       </tr>
                       <tr>
                         <td>Công việc chính thức</td>
@@ -145,7 +148,7 @@
           </div>
 
           <div class="col-lg-4">
-            <div class="panel panel-default">
+            <div class="panel panel-info">
               <div class="panel-heading">Kết quả học tập</div>
               <div class="panel-body" style="padding: 0;">
                 <div class="table-responsive">
@@ -163,17 +166,15 @@
     </div>
 
   </div>
-
-  <!--  -->
-
-
 </body>
 
+<script src="js/sweetalert.min.js"></script>
 <script src="./js/server-url.js"></script>
-<script src="./js/mobile-menu.js"></script>
 
 <script>
+  // function that unhide table when data is return from server:
   function showResult() {
+    // show table result:
     var arrPanel = $(".panel");
     for (let i = 0; i < arrPanel.length; i++) {
       arrPanel[i].style.display = "block";
@@ -182,49 +183,51 @@
 
   function searchStudent(event) {
     event.preventDefault();
-
-    fetch(SERVER_URL + "/ethereum/student?id=" + $("#masv").val()).then(response => {
-      response.json().then(result => {
-        if (!result.student.name) {
-          alert("Mã sinh viên không tồn tại trong hệ thống");
-          return;
-        }
-        searchMark();
-        if (response.status == 200) showResult();
-        $("#ten-sv").html(result.student.name);
-        $("#ngay-sinh").html(result.student.birth);
-        $("#truong").html(result.student.school);
-        $("#cap-hoc").html(result.student.level);
-        $("#nganh-hoc").html(result.student.majors);
-        $("#khoa-hoc").html(result.student.course);
-        $("#ki-tuc-xa").html(result.detail.dormitory);
-        $("#loai-hoc-bong").html(result.detail.scholarshipType);
-        $("#nam-hoc").html(result.student.year);
-        $("#so-thong-tu-lao").html(result.detail.laosCirculars);
-        $("#so-thong-tu-vn").html(result.detail.vnCirculars);
-        $("#so-dien-thoai").html(result.student.phone);
-        $("#email").html(result.student.email);
-        $("#cong-viec").html(result.detail.mainJob);
-        $("#nam-nhap-hoc").html(result.detail.admissionYear);
-        $("#nam-ket-thuc").html(result.detail.endYear);
+    fetch(SERVER_URL + "/ethereum/student?id=" + $("#masv").val())
+      .then(response => {
+        response.json()
+          .then(result => {
+            if (!result.student.name) {
+              alert("Mã sinh viên không tồn tại trong hệ thống");
+              return;
+            }
+            // also find student mark if he/she existed:
+            searchMark();
+            if (response.status == 200) showResult();
+            $("#ten-sv").html(result.student.name || "Chưa cập nhật");
+            $("#ngay-sinh").html(result.student.birth || "Chưa cập nhật");
+            $("#truong").html(result.student.school || "Chưa cập nhật");
+            $("#cap-hoc").html(result.student.level || "Chưa cập nhật");
+            $("#nganh-hoc").html(result.student.majors || "Chưa cập nhật");
+            $("#khoa-hoc").html(result.student.course || "Chưa cập nhật");
+            $("#ki-tuc-xa").html(result.detail.dormitory || "Chưa cập nhật");
+            $("#loai-hoc-bong").html(result.detail.scholarshipType || "Chưa cập nhật");
+            $("#nam-hoc").html(result.student.year || "Chưa cập nhật");
+            $("#so-thong-tu-lao").html(result.detail.laosCirculars || "Chưa cập nhật");
+            $("#so-thong-tu-vn").html(result.detail.vnCirculars || "Chưa cập nhật");
+            $("#so-dien-thoai").html(result.student.phone || "Chưa cập nhật");
+            $("#email").html(result.student.email || "Chưa cập nhật");
+            $("#cong-viec").html(result.detail.mainJob || "Chưa cập nhật");
+            $("#nam-nhap-hoc").html(result.detail.admissionYear || "Chưa cập nhật");
+            $("#nam-ket-thuc").html(result.detail.endYear || "Chưa cập nhật");
+          });
       });
-    });
   }
 
-
   function searchMark() {
-    fetch(SERVER_URL + "/ethereum/mark?id=" + $("#masv").val()).then(response => {
-      response.json().then(result => {
-        let content = "";
-        result.forEach(element => {
-          content += `<tr>
-              <td>`+ element.subjectName + `</td>
-              <td>`+ element.value + `</td>
-            </tr>`;
+    fetch(SERVER_URL + "/ethereum/mark?id=" + $("#masv").val())
+      .then(response => {
+        response.json().then(subjects => {
+          let content = "";
+          subjects.forEach(subject => {
+            content += `<tr>
+                          <td>`+ subject.subjectName + `</td>
+                          <td>`+ subject.value + `</td>
+                        </tr>`;
+          });
+          $("#table-diem").find("tbody").html(content);
         });
-        $("#table-diem").find("tbody").html(content);
       });
-    });
   }
 </script>
 
