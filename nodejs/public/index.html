@@ -10,7 +10,6 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="style.css">
 </head>
 
 <style>
@@ -41,8 +40,9 @@
           <ul class="nav navbar-nav navbar-right">
             <li><a href="http://svlao.com">Trang chủ</a></li>
             <li><a href="http://svlao.com/?page_id=28">Liên hệ</a></li>
-            <li><a href="/student.html">Quản lý sinh viên</a></li>
-            <li><a href="/user.html">Quản lý người dùng</a></li>
+            <li><a id="link-student" href="/student.html">Quản lý sinh viên</a></li>
+            <li><a id="link-user" href="/user.html">Quản lý người dùng</a></li>
+            <li><a id="link-login" onclick="login()" href="javascript:void(0);">Đăng nhập</a></li>
           </ul>
         </div>
       </div>
@@ -170,6 +170,50 @@
 
 <script src="js/sweetalert.min.js"></script>
 <script src="./js/server-url.js"></script>
+<script src="./js/web3.js"></script>
+<script src="js/smart-contract.js"></script>
+
+<script>
+	// check web3 provider and available account on load:
+	if (typeof (web3) !== 'undefined') {
+    web3 = new Web3(web3.currentProvider);
+    console.log(new Date().toLocaleString() + ' -> User metamask as web3 provider');
+
+		// check login user:
+		web3.eth.getCoinbase(function (err, userAddress) {
+			if (userAddress) {
+				const CONTRACT = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
+				CONTRACT.methods.Users(userAddress).call().then(userInfo => {
+					if (userInfo.username) {
+						$("#link-user").show();
+						$("#link-student").show();
+						$("#link-login").hide();
+					}
+					else {
+            swal("Chú ý", "Bạn chưa phải là thành viên của hệ thống. Thử đổi lại các tài khoản khả dụng trong Metamask và tải lại trang web", "warning");
+					}
+				});
+			}
+		});	
+  }
+
+	function login() {
+		if (typeof (web3) !== 'undefined') {
+			web3 = new Web3(web3.currentProvider);
+			ethereum.enable();
+			swal("Khởi động lại website sau khi đăng nhập")
+      .then((value) => {
+				location.reload();
+      });
+		}
+		else {
+			swal("Máy bạn chưa có Metamask, cài đặt Metamask để đăng nhập vào hệ thống")
+      .then((value) => {
+        window.open("https://metamask.io/", "_blank");
+      });
+		}
+	}
+</script>
 
 <script>
   // function that unhide table when data is return from server:
@@ -229,6 +273,9 @@
         });
       });
   }
+
+$("#link-user").hide();
+$("#link-student").hide();
 </script>
 
 </html>
