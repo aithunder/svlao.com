@@ -3,12 +3,13 @@ const config = require('../utils/config');
 
 // function get mark per subject of a student:
 function getMarkByStudentAndSubject(studentId, subject) {
+console.log(subject);
   return new Promise((resolve, reject) => {
     smartContract.methods.CacThongTinDiem(studentId, subject.subjectId).call().then(result => {
       if (result)
         resolve({
-          subjectName: result.subjectName || subject.subjectName,
-          value: result.value || 0
+          subjectName: result.Ten || subject.subjectName,
+          value: result.KetQua || 0
         });
       else
         reject("lỗi tìm điểm " + subject.subjectName + " của sinh viên " + studentId);
