@@ -40,8 +40,6 @@
           <ul class="nav navbar-nav navbar-right">
             <li><a href="http://svlao.com">Trang chủ</a></li>
             <li><a href="http://svlao.com/?page_id=28">Liên hệ</a></li>
-            <li><a id="link-student" href="/student.html">Quản lý sinh viên</a></li>
-            <li><a id="link-user" href="/user.html">Quản lý người dùng</a></li>
             <li><a id="link-login" onclick="login()" href="javascript:void(0);">Đăng nhập</a></li>
           </ul>
         </div>
@@ -78,67 +76,63 @@
                     <tbody>
                       <tr>
                         <td>Tên sinh viên</td>
-                        <td id="ten-sv">Tên sinh viên</td>
+                        <td id="co-ban-ho-ten">Tên sinh viên</td>
                       </tr>
                       <tr>
                         <td>Ngày sinh</td>
-                        <td id="ngay-sinh">Ngày sinh</td>
+                        <td id="co-ban-ngay-sinh">Ngày sinh</td>
                       </tr>
                       <tr>
                         <td>Trường</td>
-                        <td id="truong">Trường</td>
+                        <td id="co-ban-truong">Trường</td>
                       </tr>
                       <tr>
                         <td>Cấp học</td>
-                        <td id="cap-hoc">Cấp học</td>
+                        <td id="khoa-hoc-cap-hoc">Cấp học</td>
                       </tr>
                       <tr>
                         <td>Ngành học</td>
-                        <td id="nganh-hoc">Ngành học</td>
+                        <td id="khoa-hoc-nganh">Ngành học</td>
                       </tr>
                       <tr>
                         <td>Khóa học</td>
-                        <td id="khoa-hoc">Khóa học</td>
-                      </tr>
-                      <tr>
-                        <td>Năm học</td>
-                        <td id="nam-hoc">Năm học</td>
+                        <td id="khoa-hoc-khoa-hoc">Khóa học</td>
                       </tr>
                       <tr>
                         <td>Số điện thoại</td>
-                        <td id="so-dien-thoai">Số điện thoại</td>
+                        <td id="lien-he-so-dien-thoai">Số điện thoại</td>
                       </tr>
                       <tr>
                         <td>Email</td>
-                        <td id="email">Email</td>
+                        <td id="lien-he-email">Email</td>
                       </tr>
                       <tr>
                         <td>Kí túc xá</td>
-                        <td id="ki-tuc-xa">Kí túc xá</td>
+                        <td id="lien-he-ki-tuc-xa">Kí túc xá</td>
                       </tr>
                       <tr>
                         <td>Loại học bổng</td>
-                        <td id="loai-hoc-bong">Loại học bổng</td>
+                        <td id="khoa-hoc-hoc-bong">Loại học bổng</td>
                       </tr>
                       <tr>
                         <td>Số thông tư bên Lào</td>
-                        <td id="so-thong-tu-lao">Số thông tư bên Lào</td>
+                        <td id="khac-thong-tu-lao">Số thông tư bên Lào</td>
                       </tr>
                       <tr>
                         <td>Số thông tư bên Việt Nam</td>
-                        <td id="so-thong-tu-vn">Số thông tư bên Việt Nam</td>
+                        <td id="khac-thong-tu-vn">Số thông tư bên Việt Nam</td>
                       </tr>
                       <tr>
                         <td>Công việc chính thức</td>
-                        <td id="cong-viec">Công việc chính thức</td>
+                        <td id="khac-cong-viec">Công việc chính thức</td>
                       </tr>
                       <tr>
                         <td>Năm nhập học</td>
-                        <td id="nam-nhap-hoc">Năm nhập học</td>
+                        <td id="khoa-hoc-nam-nhap-hoc">Năm nhập học</td>
                       </tr>
                       <tr>
                         <td>Năm kết thúc</td>
-                        <td id="nam-ket-thuc">Năm kết thúc</td>
+                        <td id="khoa-hoc-nam-ket-thuc">Năm kết thúc</td>
                       </tr>
                     </tbody>
                   </table>
@@ -146,6 +140,24 @@
               </div>
             </div>
           </div>
+
+          <div class="col-lg-4">
+              <div class="panel panel-info">
+                <div class="panel-heading">Hình ảnh</div>
+                <div class="panel-body" style="padding: 0;">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <tbody>
+                        <th style="text-align: center;">
+                          <img id="student-avatar" width="200"
+                            src="">
+                        </th>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
 
           <div class="col-lg-4">
             <div class="panel panel-info">
@@ -171,48 +183,29 @@
 <script src="js/sweetalert.min.js"></script>
 <script src="./js/server-url.js"></script>
 <script src="./js/web3.js"></script>
-<script src="js/smart-contract.js"></script>
 
 <script>
-	// check web3 provider and available account on load:
-	if (typeof (web3) !== 'undefined') {
-    web3 = new Web3(web3.currentProvider);
-    console.log(new Date().toLocaleString() + ' -> User metamask as web3 provider');
-
-		// check login user:
-		web3.eth.getCoinbase(function (err, userAddress) {
-			if (userAddress) {
-				const CONTRACT = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
-				CONTRACT.methods.Users(userAddress).call().then(userInfo => {
-					if (userInfo.username) {
-						$("#link-user").show();
-						$("#link-student").show();
-						$("#link-login").hide();
-					}
-					else {
-            swal("Chú ý", "Bạn chưa phải là thành viên của hệ thống. Thử đổi lại các tài khoản khả dụng trong Metamask và tải lại trang web", "warning");
-					}
-				});
-			}
-		});	
+  async function login() {
+    if (typeof (web3) !== 'undefined') {
+      web3 = new Web3(web3.currentProvider);
+      let result = await ethereum.enable();
+      let result2 = await fetch("http://localhost:3000/ethereum/owner");
+      result2.json().then(owner => {
+        if (result[0].toLowerCase() == owner.toLowerCase()) {
+          window.location = "/list-student.html";
+        }
+        else {
+          swal("Thông báo", "Địa chỉ ví đang đăng nhập không có quyền chỉnh sửa dữ liệu. Hãy kiểm tra lại địa chỉ ví đang chọn trong Metamask rồi nhấn lại nút đăng nhập", "error");
+        }
+      })
+    }
+    else {
+      swal("Máy bạn chưa có Metamask, cài đặt Metamask để đăng nhập vào hệ thống")
+        .then((value) => {
+          window.open("https://metamask.io/", "_blank");
+        });
+    }
   }
-
-	function login() {
-		if (typeof (web3) !== 'undefined') {
-			web3 = new Web3(web3.currentProvider);
-			ethereum.enable();
-			swal("Khởi động lại website sau khi đăng nhập")
-      .then((value) => {
-				location.reload();
-      });
-		}
-		else {
-			swal("Máy bạn chưa có Metamask, cài đặt Metamask để đăng nhập vào hệ thống")
-      .then((value) => {
-        window.open("https://metamask.io/", "_blank");
-      });
-		}
-	}
 </script>
 
 <script>
@@ -231,29 +224,33 @@
       .then(response => {
         response.json()
           .then(result => {
-            if (!result.student.name) {
+            if (!result.thongTinCoBan.HoTen) {
               alert("Mã sinh viên không tồn tại trong hệ thống");
               return;
             }
             // also find student mark if he/she existed:
             searchMark();
             if (response.status == 200) showResult();
-            $("#ten-sv").html(result.student.name || "Chưa cập nhật");
-            $("#ngay-sinh").html(result.student.birth || "Chưa cập nhật");
-            $("#truong").html(result.student.school || "Chưa cập nhật");
-            $("#cap-hoc").html(result.student.level || "Chưa cập nhật");
-            $("#nganh-hoc").html(result.student.majors || "Chưa cập nhật");
-            $("#khoa-hoc").html(result.student.course || "Chưa cập nhật");
-            $("#ki-tuc-xa").html(result.detail.dormitory || "Chưa cập nhật");
-            $("#loai-hoc-bong").html(result.detail.scholarshipType || "Chưa cập nhật");
-            $("#nam-hoc").html(result.student.year || "Chưa cập nhật");
-            $("#so-thong-tu-lao").html(result.detail.laosCirculars || "Chưa cập nhật");
-            $("#so-thong-tu-vn").html(result.detail.vnCirculars || "Chưa cập nhật");
-            $("#so-dien-thoai").html(result.student.phone || "Chưa cập nhật");
-            $("#email").html(result.student.email || "Chưa cập nhật");
-            $("#cong-viec").html(result.detail.mainJob || "Chưa cập nhật");
-            $("#nam-nhap-hoc").html(result.detail.admissionYear || "Chưa cập nhật");
-            $("#nam-ket-thuc").html(result.detail.endYear || "Chưa cập nhật");
+            $("#co-ban-ho-ten").html(result.thongTinCoBan.HoTen || "Chưa cập nhật");
+            $("#co-ban-ngay-sinh").html(result.thongTinCoBan.NgaySinh || "Chưa cập nhật");
+            $("#co-ban-truong").html(result.thongTinCoBan.Truong || "Chưa cập nhật");
+            $("#khoa-hoc-cap-hoc").html(result.thongTinKhoaHoc.CapHoc || "Chưa cập nhật");
+            $("#khoa-hoc-nganh").html(result.thongTinKhoaHoc.Nganh || "Chưa cập nhật");
+            $("#khoa-hoc-khoa-hoc").html(result.thongTinKhoaHoc.KhoaHoc || "Chưa cập nhật");
+            $("#khoa-hoc-nam-nhap-hoc").html(result.thongTinKhoaHoc.NamNhapHoc || "Chưa cập nhật");
+            $("#khoa-hoc-nam-ket-thuc").html(result.thongTinKhoaHoc.NamKetThuc || "Chưa cập nhật");
+            $("#khoa-hoc-hoc-bong").html(result.thongTinKhoaHoc.LoaiHocBong || "Chưa cập nhật");
+            $("#lien-he-ki-tuc-xa").html(result.thongTinLienHe.KiTucXa || "Chưa cập nhật");
+            $("#lien-he-dien-thoai").html(result.thongTinLienHe.DienThoai || "Chưa cập nhật");
+            $("#lien-he-email").html(result.thongTinLienHe.Email || "Chưa cập nhật");
+            $("#khac-thong-tu-lao").html(result.thongTinKhac.ThongTuLao || "Chưa cập nhật");
+            $("#khac-thong-tu-vn").html(result.thongTinKhac.ThongTuVN || "Chưa cập nhật");
+            $("#khac-cong-viec").html(result.thongTinKhac.CongViecChinh || "Chưa cập nhật");
+            $("#khac-ghi-chu").html(result.thongTinKhac.GhiChu || "Chưa cập nhật");
+            if (result.hinhDaiDien)
+            $("#student-avatar").attr("src", "/uploads/" + result.hinhDaiDien);
+            else
+            $("#student-avatar").attr("src", "https://www.koste.com.au/wp-content/uploads/2017/07/avatar-1577909_640-300x300.png");
           });
       });
   }
@@ -273,9 +270,6 @@
         });
       });
   }
-
-$("#link-user").hide();
-$("#link-student").hide();
 </script>
 
 </html>

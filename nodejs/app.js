@@ -14,7 +14,7 @@ var storage = multer.diskStorage({
   },
   filename: (req, file, callback) => {
     // name of image when uploaded on server
-    callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    callback(null, req.body.studentId + '-' + Date.now() + path.extname(file.originalname));
   }
 });
 var upload = multer({ storage: storage });
@@ -25,12 +25,13 @@ app.use('/', express.static(path.join(__dirname, 'public'))); // define public w
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // define public website path:
 app.use(cors());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true })); 
 app.use("/ethereum", ethereum);
 
 // api save student avatar:
 app.post('/upload/student', upload.single('image'), (req, res) => {
-  res.status(200).json({ message: 'upload successed' });
-  console.log('New student avatar uploaded');
+  res.status(200).json({ "fileName": req.file.filename });
+  console.log('New student avatar uploaded - ' + req.file.filename );
 });
 
 // make server listening on a species port:

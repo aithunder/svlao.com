@@ -1,176 +1,125 @@
-pragma experimental ABIEncoderV2; // for using struct in function & this may create error, so if meet any error when deploying, check this first.
-pragma solidity ^0.5.3;
+pragma solidity >=0.5.3;
 
-contract StudentManagement {
-    uint public countUser = 0;
-    uint public countStudent = 0;
-    
-    struct User {
-        string username;
-        uint permission;
-    }
-    
-    struct Student {
-        string Name;
-        string Birth;
-        string School;
-        string Level;
-        string Majors;
-        string Course;
-        string Year;
-        string Phone;
-        string Email;
-    }
-    
-    struct DetailStudent {
-        string Dormitory;
-        string ScholarshipType;
-        string LaosCirculars;
-        string VNCirculars;
-        string MainJob;
-        string AdmissionYear;
-        string EndYear;
-        string Note;
-    }
-    
-    struct Subject {
-        string Name;
-        string Value;
-    }
-    
-    mapping (uint => address) public indexUser;
-    mapping (address => User) public Users;
-    mapping (uint => string) public indexStudent;
-    mapping (string => Student) Students;
-    mapping (string => DetailStudent) DetailStudents;
-    mapping (string => mapping(string => Subject)) Subjects;
-    
-    // event:
-    event CreatedUser(address wallet, string username, uint permission);
-    event UpdatedUser(address wallet, string username, uint permission);
-    event CreatedStudent(string studentId);
-    event UpdatedStudent(string studentId);
-    event CreatedDetailStudent(string studentId);
-    event UpdatedDetailStudent(string studentId);
-    event savedMark( string studentId, string subjectName, string value );
-    
-    // only user have writeable permission can do transaction:
-    modifier writeable() {
-		require(Users[msg.sender].permission == 3 || Users[msg.sender].permission == 7);
-		_;
-	}
+/**
+ * - only owner (admin) can edit information.
+ * - to insert other information, the basic information of a student must not be null.
+ * 
+ **/
 
-	modifier excutable() {
-		require(Users[msg.sender].permission == 7);
-		_;
+contract SinhVien {
+    address Root;
+    address public Owner;
+    uint public TongSinhVien = 0;
+    mapping (uint => string) public CacMaSinhVien;
+    
+    struct ThongTinCoBan {
+		string HoTen;
+		string NgaySinh;
+		string Truong;
 	}
-    
-    constructor() public {
-        indexUser[countUser++] = msg.sender;
-        Users[msg.sender] = User('admin', 7);
-    }
-    
-    function setUser(address wallet, string memory username, uint permission) excutable public {
-        // require(bytes(Users[wallet].username).length == 0);
-	    indexUser[countUser++] = wallet;
-	    Users[wallet] = User(username, permission);
-	    if (bytes(Users[wallet].username).length == 0)
-            emit CreatedUser(wallet, username, permission);
-        else
-            emit UpdatedUser(wallet, username, permission);
-    }
-    
-    function setStudent(
-        string memory id, 
-        string memory name, 
-        string memory birth, 
-        string memory school,
-        string memory level,
-        string memory majors,
-        string memory course,
-        string memory year,
-        string memory phone,
-        string memory email
-    )public writeable {
-        indexStudent[countStudent++] = id;
-        Students[id].Name = name;
-        Students[id].Birth = birth;
-        Students[id].School = school;
-        Students[id].Level = level;
-        Students[id].Majors = majors;
-        Students[id].Course = course;
-        Students[id].Year = year;
-        Students[id].Phone = phone;
-        Students[id].Email = email;
-        if (bytes(Students[id].Name).length == 0)
-            emit CreatedStudent(id);
-        else
-            emit UpdatedStudent(id);
-    }
-    
-    function setDetailStudent(
-        string memory id, 
-        string memory dormitory, 
-        string memory scholarshipType, 
-        string memory laosCirculars,
-        string memory vnCirculars,
-        string memory mainJob,
-        string memory admissionYear,
-        string memory endYear,
-        string memory note
-    ) public writeable {
-        DetailStudents[id].Dormitory = dormitory;
-        DetailStudents[id].ScholarshipType = scholarshipType;
-        DetailStudents[id].LaosCirculars = laosCirculars;
-        DetailStudents[id].VNCirculars = vnCirculars;
-        DetailStudents[id].MainJob = mainJob;
-        DetailStudents[id].AdmissionYear = admissionYear;
-        DetailStudents[id].EndYear = endYear;
-        DetailStudents[id].Note = note;
-        if (bytes(DetailStudents[id].Dormitory).length == 0)
-            emit CreatedDetailStudent(id);
-        else
-            emit UpdatedDetailStudent(id);
-    }
-    
-    // get a student by their id:
-    function getStudent(string memory id) public view returns(
-        string memory name, 
-        string memory birth, 
-        string memory school,
-        string memory level,
-        string memory majors,
-        string memory course,
-        string memory year,
-        string memory phone,
-        string memory email) {
-        Student memory result = Students[id];
-        return (result.Name, result.Birth, result.School, result.Level, result.Majors, result.Course, result.Year, result.Phone, result.Email);
-    }
-    
-    // get a student detail by their id:
-    function getDetailStudent(string memory id) public view returns(
-        string memory dormitory, 
-        string memory scholarshipType, 
-        string memory laosCirculars,
-        string memory vnCirculars,
-        string memory mainJob,
-        string memory admissionYear,
-        string memory endYear,
-        string memory note) {
-        DetailStudent memory result = DetailStudents[id];
-        return (result.Dormitory, result.ScholarshipType, result.LaosCirculars, result.VNCirculars, result.MainJob, result.AdmissionYear, result.EndYear, result.Note);
-    }
-    
-    // save new mark:
-    function setMark(string memory studentId, string memory subjectId, string memory subjectName, string memory value) public writeable {
-        Subjects[studentId][subjectId] = Subject(subjectName, value);
-        emit savedMark(studentId, subjectName, value);
-    }
-    
-    // set mark of a student:
-    function getMark(string memory studentId, string memory subjectId) public view returns(string memory subjectName, string memory value) {
-        Subject memory result = Subjects[studentId][subjectId];
-        return(result.Name, result.Value);
-    }
+	mapping(string => ThongTinCoBan) public CacThongTinCoBan;
+	
+	struct ThongTinKhoaHoc {
+		string CapHoc;
+		string Nganh;
+		string KhoaHoc;
+		string LoaiHocBong;
+		string NamNhapHoc;
+		string NamKetThuc;
+	}
+	mapping(string => ThongTinKhoaHoc) public CacThongTinKhoaHoc;
+	
+	struct ThongTinLienHe {
+		string DienThoai;
+		string Email;
+		string KiTucXa;
+	}
+	mapping(string => ThongTinLienHe) public CacThongTinLienHe;
+	
+	struct ThongTinKhac {
+		string CongViecChinh;
+		string SoThongTuLao;
+		string SoThongTuVN;
+		string GhiChu;
+	}
+	mapping(string => ThongTinKhac) public CacThongTinKhac;
+	
+	struct ThongTinDiem {
+	    string Ten;
+	    string KetQua;
+	}
+	mapping(string => mapping(string => ThongTinDiem)) public CacThongTinDiem;
+	
+	mapping(string => string) public CacHinhDaiDien;
+	
+	event ThemThongTinCoBan(string maSv);
+	event ThemThongTinKhoaHoc(string maSv);
+	event ThemThongTinLienHe(string maSv);
+	event ThemThongTinKhac(string maSv);
+	event ThemThongTinDiem(string masv, string maMonHoc);
+	
+	event CapNhatThongTinCoBan(string maSV, string hoTen, string ngaySinh, string truong);
+	event CapNhatThongTinKhoaHoc(string maSV, string capHoc, string nganh, string khoaHoc, string loaiHocBong, string namNhapHoc, string namKetThuc);
+	event CapNhatThongTinLienHe(string maSV, string dienThoai, string email, string kiTucXa);
+	event CapNhatThongTinKhac(string maSV, string congViecChinh, string soThongTuLao, string soThongTuVN, string ghiChu);
+	event CapNhatThongTinDiem(string masv, string maMonHoc, string ten, string ketQua);
+	
+	constructor(address ownerAddress) public {
+	    Root = msg.sender;
+	    Owner = ownerAddress;
+	}
+	
+	modifier OnlyOwner() {
+	    require(msg.sender == Owner || msg.sender == Root);
+	    _;
+	}
+	
+	function SuaThongTinCoBan(string memory maSV, string memory hoTen, string memory ngaySinh, string memory truong) public OnlyOwner {
+	    if(bytes(CacThongTinCoBan[maSV].HoTen).length == 0) {
+	        CacMaSinhVien[TongSinhVien++] = maSV;
+	        emit ThemThongTinCoBan(maSV);
+	    }
+	    else emit CapNhatThongTinCoBan(maSV, hoTen, ngaySinh, truong);
+	    CacThongTinCoBan[maSV] = ThongTinCoBan(hoTen, ngaySinh, truong);
+	}
+	
+	function SuaThongTinKhoaHoc(string memory maSV, string memory capHoc, string memory nganh, string memory khoaHoc, string memory loaiHocBong, string memory namNhapHoc, string memory namKetThuc ) public {
+	    require(bytes(CacThongTinCoBan[maSV].HoTen).length != 0);
+	    if(bytes(CacThongTinKhoaHoc[maSV].CapHoc).length == 0)
+	        emit ThemThongTinKhoaHoc(maSV);
+        else emit CapNhatThongTinKhoaHoc(maSV, capHoc, nganh, khoaHoc, loaiHocBong, namNhapHoc, namKetThuc);
+        CacThongTinKhoaHoc[maSV] = ThongTinKhoaHoc(capHoc, nganh, khoaHoc, loaiHocBong, namNhapHoc, namKetThuc);
+	}
+	
+	function SuaThongTinLienHe(string memory maSV, string memory dienThoai, string memory email, string memory kiTucXa) public OnlyOwner {
+	    require(bytes(CacThongTinCoBan[maSV].HoTen).length != 0);
+	    if(bytes(CacThongTinLienHe[maSV].DienThoai).length == 0)
+	        emit ThemThongTinLienHe(maSV);
+        else emit CapNhatThongTinLienHe(maSV, dienThoai, email, kiTucXa);
+	    CacThongTinLienHe[maSV] = ThongTinLienHe(dienThoai, email, kiTucXa);
+	}
+	
+	function SuaThongTinKhac(string memory maSV, string memory congViecChinh, string memory soThongTuLao, string memory soThongTuVN, string memory ghiChu) public OnlyOwner {
+	    require(bytes(CacThongTinCoBan[maSV].HoTen).length != 0);
+	    if(bytes(CacThongTinKhac[maSV].CongViecChinh).length == 0)
+	        emit ThemThongTinKhac(maSV);
+        else emit CapNhatThongTinKhac(maSV, congViecChinh, soThongTuLao, soThongTuVN, ghiChu);
+	    CacThongTinKhac[maSV] = ThongTinKhac(congViecChinh, soThongTuLao, soThongTuVN, ghiChu);
+	}
+	
+	function SuaThongTinDiem(string memory maSV, string memory maMonHoc, string memory ten, string memory ketQua) public OnlyOwner {
+	    require(bytes(CacThongTinCoBan[maSV].HoTen).length != 0);
+	    if(bytes(CacThongTinDiem[maSV][maMonHoc].Ten).length == 0)
+	        emit ThemThongTinDiem(maSV, maMonHoc);
+        else emit CapNhatThongTinDiem(maSV, maMonHoc, ten, ketQua);
+	    CacThongTinDiem[maSV][maMonHoc] = ThongTinDiem(ten, ketQua);
+	}
+	
+	function SuaHinhDaiDien(string memory maSV, string memory duongDan) public OnlyOwner {
+	    CacHinhDaiDien[maSV] = duongDan;
+	}
+	
+	function ChangeOwner(address newOnwer) public OnlyOwner {
+	    Owner = newOnwer;
+	}
 }
