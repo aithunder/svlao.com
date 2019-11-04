@@ -250,7 +250,7 @@
       web3 = new Web3(web3.currentProvider);
 
       let result = await ethereum.enable();
-      let result2 = await fetch("http://localhost:3000/ethereum/owner");
+      let result2 = await fetch(SERVER_URL + '/ethereum/owner");
       result2.json().then(owner => {
         if (result[0].toLowerCase() == owner.toLowerCase()) {
           currentUser = result[0];
@@ -410,7 +410,7 @@
     formData.append('image', fileField.files[0]);
 
     try {
-      const response = await fetch('http://localhost:3000/upload/student', {
+      const response = await fetch(SERVER_URL + '/upload/student', {
         method: 'POST',
         body: formData
       });
