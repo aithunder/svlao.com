@@ -227,7 +227,7 @@
       web3 = new Web3(web3.currentProvider);
 
       let result = await ethereum.enable();
-      let result2 = await fetch(SERVER_URL + "/ethereum/owner");
+      let result2 = await fetch(SERVER_URL + "/student/owner");
       result2.json().then(owner => {
         if (result[0].toLowerCase() == owner.toLowerCase()) {
           currentUser = result[0];
@@ -247,7 +247,7 @@
       });
 
       // init contract:
-      fetch(SERVER_URL + "/ethereum/contract").then(response => {
+      fetch(SERVER_URL + "/student/contract").then(response => {
         response.json().then(contract => {
           CONTRACT = new web3.eth.Contract(contract.ABI, contract.address.toLowerCase());
         });

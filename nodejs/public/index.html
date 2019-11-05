@@ -39,6 +39,7 @@
         <div class="collapse navbar-collapse" id="myNavbar">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="http://svlao.com">Trang chủ</a></li>
+            <li><a href="/certificate.html">Tra cứu văn bằng</a></li>
             <li><a href="http://svlao.com/?page_id=28">Liên hệ</a></li>
             <li><a id="link-login" onclick="login()" href="javascript:void(0);">Đăng nhập</a></li>
           </ul>
@@ -189,7 +190,7 @@
     if (typeof (web3) !== 'undefined') {
       web3 = new Web3(web3.currentProvider);
       let result = await ethereum.enable();
-      let result2 = await fetch(SERVER_URL + '/ethereum/owner");
+      let result2 = await fetch(SERVER_URL + '/student/owner');
       result2.json().then(owner => {
         if (result[0].toLowerCase() == owner.toLowerCase()) {
           window.location = "/list-student.html";
@@ -220,7 +221,7 @@
 
   function searchStudent(event) {
     event.preventDefault();
-    fetch(SERVER_URL + "/ethereum/student?id=" + $("#masv").val())
+    fetch(SERVER_URL + "/student/student?id=" + $("#masv").val())
       .then(response => {
         response.json()
           .then(result => {
@@ -256,7 +257,7 @@
   }
 
   function searchMark() {
-    fetch(SERVER_URL + "/ethereum/mark?id=" + $("#masv").val())
+    fetch(SERVER_URL + "/student/mark?id=" + $("#masv").val())
       .then(response => {
         response.json().then(subjects => {
           let content = "";

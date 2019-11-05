@@ -25,7 +25,4 @@ const getProvider = () => {
 const web3 = new Web3(getProvider());
 
 // export smartcontract instance:
-module.exports = {
-	studentContract : new web3.eth.Contract(config.STUDENT_CONTRACT_ABI, config.STUDENT_CONTRACT_ADDRESS),
-	certificateContract : new web3.eth.Contract(config.CERTIFICATE_CONTRACT_ABI, config.CERTIFICATE_CONTRACT_ADDRESS),
-}
+module.exports = new web3.eth.Contract(config.CERTIFICATE_CONTRACT_ABI, config.CERTIFICATE_CONTRACT_ADDRESS);

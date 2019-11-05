@@ -1,4 +1,4 @@
-const smartContract = require('../models/ethereum');
+const smartContract = require('../models/ethereum').studentContract;
 const config = require('../utils/config');
 
 // function get mark per subject of a student:
@@ -37,8 +37,8 @@ module.exports = {
     })
   },
   getSmartContract: function (req, res) {
-    if (config.CONTRACT_ABI && config.CONTRACT_ADDRESS)
-      res.status(200).json({ "ABI": config.CONTRACT_ABI, "address": config.CONTRACT_ADDRESS });
+    if (config.STUDENT_CONTRACT_ABI && config.STUDENT_CONTRACT_ADDRESS)
+      res.status(200).json({ "ABI": config.STUDENT_CONTRACT_ABI, "address": config.STUDENT_CONTRACT_ADDRESS });
     else
       res.status(404).json({ message: "Không tìm thấy địa chỉ smart contract nào trong hệ thống" });
   },
