@@ -22,18 +22,46 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="javascript:void(0);">Quản lý người dùng</a>
+          <a class="navbar-brand" href="javascript:void(0);">Thông tin thực tập</a>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="http://svlao.com">Trang chủ</a></li>
-            <li><a href="/index.html">Tra cứu sinh viên</a></li>
-            <li><a href="/certificate.html">Tra cứu văn bằng</a></li>
-            <!-- <li><a href="/list-student.html">Cập nhật thông tin sinh viên</a></li> -->
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="">Tra cứu
+                <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/">Tra cứu thông tin sinh viên</a></li>
+                <li><a href="/tra-cuu-bang.html">Tra cứu thông tin văn bằng</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="">Thêm thông tin
+                <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/thong-tin-co-ban.html">Thêm thông tin cơ bản</a></li>
+                <li><a href="/thong-tin-khoa-hoc.html">Thêm thông tin khoá học</a></li>
+                <li><a href="/thong-tin-doan.html">Thêm thông tin đoàn đội</a></li>
+                <li><a href="/thong-tin-lien-he.html">Thêm thông tin liên hệ</a></li>
+                <li><a href="/thong-tin-chi-tiet.html">Thêm thông tin chi tiết</a></li>
+                <li><a href="/thong-tin-bang-cap.html">Thêm thông tin bằng cấp</a></li>
+                <li><a href="/thong-tin-thuc-tap.html">Thêm thông tin thực tập</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Cập nhật thông tin
+                <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/danh-sach-co-ban.html">Cập nhật các thông tin cơ bản</a></li>
+                <li><a href="/danh-sach-ket-qua.html">Cập nhật kết quả học tập</a></li>
+              </ul>
+            </li>
+            <!-- <li><a id="link-login" onclick="login()" href="javascript:void(0);">Đăng nhập</a></li> -->
           </ul>
         </div>
       </div>
     </nav>
+    <!-- end of topbar -->
 
     <!-- content -->
     <div class="container" style="margin-top: 100px;">
@@ -43,7 +71,9 @@
             <div class="panel-heading">Chuyển quyền admin cho người khác</div>
 
             <div class="panel-body">
-              <p style="color:red;">Lưu ý: khi chấp nhận chuyển quyền admin cho địa chỉ khác, đồng nghĩa với việc địa chỉ hiện tại sẽ không còn quyền admin nữa. Bạn sẽ không thể dùng địa chỉ này để đăng nhập và lưu thông tin.</p>
+              <p style="color:red;">Lưu ý: khi chấp nhận chuyển quyền admin cho địa chỉ khác, đồng nghĩa với việc địa
+                chỉ hiện tại sẽ không còn quyền admin nữa. Bạn sẽ không thể dùng địa chỉ này để đăng nhập và lưu thông
+                tin.</p>
               <form onsubmit="chuyenQuyenAdmin(event)">
                 <div class="form-group">
                   <label for="user-dia-chi-vi">Địa chỉ ví cần chuyển quyền:</label>
@@ -67,7 +97,10 @@
 <script>
   // global variable:
   var currentUser = "";
-  var CONTRACT = null;
+  var BASIC_CONTRACT = null;
+  var RESULT_CONTRACT = null;
+  const urlParams = new URLSearchParams(window.location.search);
+  const id = urlParams.get('id');
 
   async function initWeb3() {
     // init web3 provider:
@@ -75,9 +108,9 @@
       web3 = new Web3(web3.currentProvider);
 
       let result = await ethereum.enable();
-      let result2 = await fetch(SERVER_URL + "/student/owner");
+      let result2 = await fetch(SERVER_URL + "/ethereum/owner");
       result2.json().then(owner => {
-        if (result[0].toLowerCase() == owner.toLowerCase()) {
+        if (result[0].toLowerCase() == owner.ownerBasic.toLowerCase() || result[0].toLowerCase() == owner.ownerResult.toLowerCase()) {
           currentUser = result[0];
           console.log(new Date().toLocaleString() + ' -> Use metamask as web3 provider');
 
@@ -95,9 +128,10 @@
       });
 
       // init contract:
-      fetch(SERVER_URL + "/student/contract").then(response => {
+      fetch(SERVER_URL + "/ethereum/contract").then(response => {
         response.json().then(contract => {
-          CONTRACT = new web3.eth.Contract(contract.ABI, contract.address.toLowerCase());
+          BASIC_CONTRACT = new web3.eth.Contract(contract.studentBasic.ABI, contract.studentBasic.address.toLowerCase());
+          RESULT_CONTRACT = new web3.eth.Contract(contract.studentResult.ABI, contract.studentResult.address.toLowerCase());
         });
       });
     }
@@ -115,14 +149,16 @@
 
     let address = $("#user-dia-chi-vi").val();
 
-    CONTRACT.methods.ChangeOwner(address)
+    BASIC_CONTRACT.methods.ChangeOwner(address)
+      .send({ from: currentUser });
+    RESULT_CONTRACT.methods.ChangeOwner(address)
       .send({ from: currentUser })
       .on("confirmation", function () {
         // notify to user:
         swal("Thông báo", "Khởi động lại trang web và đăng nhập lại")
-        .then((value) => {
-          window.open("/");
-        });
+          .then((value) => {
+            window.open("/");
+          });
       });
   }
 

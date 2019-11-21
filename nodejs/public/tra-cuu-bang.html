@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tra cứu thông tin văn bằng</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<style>
+    .panel {
+        display: none;
+    }
+
+    .table {
+        margin: 0;
+    }
+</style>
+
+<body>
+    <div class="wrapper">
+        <!-- topbar -->
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="javascript:void(0);">Tra cứu thông tin văn bằng</a>
+                </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="http://svlao.com">Trang chủ</a></li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="">Tra cứu
+                                <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/">Tra cứu thông tin sinh viên</a></li>
+                                <li><a href="/tra-cuu-bang.html">Tra cứu thông tin văn bằng</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="">Thêm thông tin
+                                <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/thong-tin-co-ban.html">Thêm thông tin cơ bản</a></li>
+                                <li><a href="/thong-tin-khoa-hoc.html">Thêm thông tin khoá học</a></li>
+                                <li><a href="/thong-tin-doan.html">Thêm thông tin đoàn đội</a></li>
+                                <li><a href="/thong-tin-lien-he.html">Thêm thông tin liên hệ</a></li>
+                                <li><a href="/thong-tin-chi-tiet.html">Thêm thông tin chi tiết</a></li>
+                                <li><a href="/thong-tin-bang-cap.html">Thêm thông tin bằng cấp</a></li>
+                                <li><a href="/thong-tin-thuc-tap.html">Thêm thông tin thực tập</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Cập nhật thông tin
+                                <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/danh-sach-co-ban.html">Cập nhật các thông tin cơ bản</a></li>
+                                <li><a href="/danh-sach-ket-qua.html">Cập nhật kết quả học tập</a></li>
+                            </ul>
+                        </li>
+                        <li><a id="link-login" onclick="login()" href="javascript:void(0);">Đăng nhập</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- end of topbar -->
+
+        <!-- main content -->
+        <div class="content" style="margin-top: 100px;">
+            <div class="container">
+                <!-- search box -->
+                <br>
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <form onsubmit="searchStudent(event);">
+                            <div class="input-group">
+                                <span class="input-group-addon">Mã sinh viên</span>
+                                <input id="masv" type="text" class="form-control" name="masv"
+                                    placeholder="Nhập vào mã sinh viên">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="submit">Tìm</button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <!-- end of search box -->
+
+                <!-- content -->
+                <div class="row">
+                    <!-- avatar -->
+                    <div class="col-lg-4">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">Hình ảnh</div>
+                            <div class="panel-body" style="padding: 0;">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tbody>
+                                            <th style="text-align: center;">
+                                                <img id="student-avatar" width="200" src="">
+                                            </th>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- </div> -->
+                        <!-- end of avatar -->
+
+                        <!-- thong tin co ban -->
+                        <!-- <div class="col-lg-4"> -->
+                        <!-- <div class="panel panel-info">
+                            <div class="panel-heading">Thông tin sinh viên</div>
+                            <div class="panel-body" style="padding: 0;">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td>Tên sinh viên</td>
+                                                <td id="ho-ten">Tên sinh viên</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Ngày sinh</td>
+                                                <td id="ngay-sinh">Ngày sinh</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Trường</td>
+                                                <td id="truong">Trường</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div> -->
+                        <!-- end of thong tin co ban -->
+                    </div>
+                    <!-- </div> -->
+
+                    <div class="col-lg-8">
+                        <!-- thong tin chi tiet -->
+                        <div class="panel panel-info">
+                            <div class="panel-heading">Thông tin văn bằng</div>
+                            <div class="panel-body" style="padding: 0;">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td>Tên sinh viên</td>
+                                                <td id="ho-ten">Tên sinh viên</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Ngày sinh</td>
+                                                <td id="ngay-sinh">Ngày sinh</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Trường</td>
+                                                <td id="truong">Trường</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Số hiệu</td>
+                                                <td id="so-hieu">Số hiệu</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Năm tốt nghiệp</td>
+                                                <td id="nam-tot-nghiep">Năm tốt nghiệp</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Xếp loại</td>
+                                                <td id="xep-loai">Xếp loại</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Hình thức đào tạo</td>
+                                                <td id="hinh-thuc-dao-tao">Hình thức đào tạo</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Ngày cấp</td>
+                                                <td id="ngay-cap">Ngày cấp</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end of thong tin chi tiet -->
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- end of main content -->
+
+    </div>
+</body>
+
+<script src="js/sweetalert.min.js"></script>
+<script src="./js/server-url.js"></script>
+<script src="./js/web3.js"></script>
+
+<script>
+    async function login() {
+        if (typeof (web3) !== 'undefined') {
+            web3 = new Web3(web3.currentProvider);
+            let result = await ethereum.enable();
+            let result2 = await fetch(SERVER_URL + '/ethereum/owner');
+            result2.json().then(owner => {
+                if (result[0].toLowerCase() == owner.ownerBasic.toLowerCase() || result[0].toLowerCase() == owner.ownerResult.toLowerCase()) {
+                    window.location = "/danh-sach-co-ban.html";
+                }
+                else {
+                    swal("Thông báo", "Địa chỉ ví đang đăng nhập không có quyền chỉnh sửa dữ liệu. Hãy kiểm tra lại địa chỉ ví đang chọn trong Metamask rồi nhấn lại nút đăng nhập", "error");
+                }
+            })
+        }
+        else {
+            swal("Máy bạn chưa có Metamask, cài đặt Metamask để đăng nhập vào hệ thống")
+                .then((value) => {
+                    window.open("https://metamask.io/", "_blank");
+                });
+        }
+    }
+</script>
+
+<script>
+    // function that unhide table when data is return from server:
+    function showResult() {
+        // show table result:
+        var arrPanel = $(".panel");
+        for (let i = 0; i < arrPanel.length; i++) {
+            arrPanel[i].style.display = "block";
+        }
+    }
+
+    // get data:
+    function searchStudent() {
+        event.preventDefault();
+        fetch(SERVER_URL + "/ethereum/result/detail?id=" + $("#masv").val())
+            .then(response => {
+                response.json()
+                    .then(result => {
+                        if (!result.thongTinCoBan.HoTen) {
+                            alert("Mã sinh viên không tồn tại trong hệ thống");
+                            return;
+                        }
+
+                        if (response.status == 200) showResult();
+                        // thong tin co ban:
+                        $("#ho-ten").html(result.thongTinCoBan.HoTen || "Chưa cập nhật");
+                        $("#ngay-sinh").html(result.thongTinCoBan.NgaySinh || "Chưa cập nhật");
+                        $("#truong").html(result.thongTinCoBan.Truong || "Chưa cập nhật");
+                        // thong tin bang:
+                        $("#so-hieu").html(result.thongTinBang.SoHieu || "Chưa cập nhật");
+                        $("#nam-tot-nghiep").html(result.thongTinBang.NamTotNghiep || "Chưa cập nhật");
+                        $("#xep-loai").html(result.thongTinBang.XepLoai || "Chưa cập nhật");
+                        $("#hinh-thuc-dao-tao").html(result.thongTinBang.HinhThucDaoTao || "Chưa cập nhật");
+                        $("#ngay-cap").html(result.thongTinBang.NgayCap || "Chưa cập nhật");
+
+                        if (result.hinhDaiDien)
+                            $("#student-avatar").attr("src", "/uploads/" + result.hinhDaiDien);
+                        else
+                            $("#student-avatar").attr("src", "https://www.koste.com.au/wp-content/uploads/2017/07/avatar-1577909_640-300x300.png");
+                    });
+            });
+    }
+</script>
+
+</html>

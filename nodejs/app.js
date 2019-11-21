@@ -1,8 +1,9 @@
 // import libraries & modules:
 const express = require("express");
 const config = require("./utils/config");
-const student = require("./routes/student");
-const certificate = require("./routes/certificate");
+// const student = require("./routes/student");
+// const certificate = require("./routes/certificate");
+const ethereum = require("./routes/ethereum");
 const cors = require("cors");
 const bodyParser = require('body-parser');
 const path = require("path");
@@ -27,8 +28,9 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // define 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true })); 
-app.use("/student", student);
-app.use("/certificate", certificate);
+// app.use("/student", student);
+// app.use("/certificate", certificate);
+app.use("/ethereum", ethereum);
 
 // api save student avatar:
 app.post('/upload/student', upload.single('image'), (req, res) => {

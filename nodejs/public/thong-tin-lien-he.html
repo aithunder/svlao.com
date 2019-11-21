@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Thông tin liên hệ</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <!-- topbar -->
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="javascript:void(0);">Thông tin liên hệ</a>
+                </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="http://svlao.com">Trang chủ</a></li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="">Tra cứu
+                                <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/">Tra cứu thông tin sinh viên</a></li>
+                                <li><a href="/tra-cuu-bang.html">Tra cứu thông tin văn bằng</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="">Thêm thông tin
+                                <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/thong-tin-co-ban.html">Thêm thông tin cơ bản</a></li>
+                                <li><a href="/thong-tin-khoa-hoc.html">Thêm thông tin khoá học</a></li>
+                                <li><a href="/thong-tin-doan.html">Thêm thông tin đoàn đội</a></li>
+                                <li><a href="/thong-tin-lien-he.html">Thêm thông tin liên hệ</a></li>
+                                <li><a href="/thong-tin-chi-tiet.html">Thêm thông tin chi tiết</a></li>
+                                <li><a href="/thong-tin-bang-cap.html">Thêm thông tin bằng cấp</a></li>
+                                <li><a href="/thong-tin-thuc-tap.html">Thêm thông tin thực tập</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Cập nhật thông tin
+                                <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/danh-sach-co-ban.html">Cập nhật các thông tin cơ bản</a></li>
+                                <li><a href="/danh-sach-ket-qua.html">Cập nhật kết quả học tập</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/user.html">Quản lý người dùng</a></li>
+                        <!-- <li><a id="link-login" onclick="login()" href="javascript:void(0);">Đăng nhập</a></li> -->
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- end of topbar -->
+
+        <!-- main content -->
+        <div class="content" style="margin-top: 100px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">Thông tin liên hệ</div>
+
+                            <div class="panel-body">
+                                <form onsubmit="ThemThongTinLienHe(event)">
+                                    <div class="form-group">
+                                        <label for="masv">Mã sinh viên:</label>
+                                        <input type="text" class="form-control" id="masv">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="dien-thoai">Điện thoại:</label>
+                                        <input type="text" class="form-control" id="dien-thoai">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Email:</label>
+                                        <input type="text" class="form-control" id="email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ki-tuc-xa">Kí túc xá:</label>
+                                        <input type="text" class="form-control" id="ki-tuc-xa">
+                                    </div>
+                                    <button type="submit" class="btn btn-info">Lưu</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end of main content -->
+
+    </div>
+</body>
+
+<script src="js/sweetalert.min.js"></script>
+<script src="./js/server-url.js"></script>
+<script src="./js/web3.js"></script>
+
+<script>
+    // global variable:
+    var currentUser = "";
+    var BASIC_CONTRACT = null;
+    var RESULT_CONTRACT = null;
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+
+    async function initWeb3() {
+        // init web3 provider:
+        if (typeof (web3) !== 'undefined') {
+            web3 = new Web3(web3.currentProvider);
+
+            let result = await ethereum.enable();
+            let result2 = await fetch(SERVER_URL + "/ethereum/owner");
+            result2.json().then(owner => {
+                if (result[0].toLowerCase() == owner.ownerBasic.toLowerCase() || result[0].toLowerCase() == owner.ownerResult.toLowerCase()) {
+                    currentUser = result[0];
+                    console.log(new Date().toLocaleString() + ' -> Use metamask as web3 provider');
+
+                    // check user address to logout:
+                    web3.currentProvider.publicConfigStore.on('update', result => {
+                        if (!result.selectedAddress)
+                            window.location = "/";
+                        else
+                            currentUser = result.selectedAddress;
+                    });
+                }
+                else {
+                    window.location = "/";
+                }
+            });
+
+            // init contract:
+            fetch(SERVER_URL + "/ethereum/contract").then(response => {
+                response.json().then(contract => {
+                    BASIC_CONTRACT = new web3.eth.Contract(contract.studentBasic.ABI, contract.studentBasic.address.toLowerCase());
+                    RESULT_CONTRACT = new web3.eth.Contract(contract.studentResult.ABI, contract.studentResult.address.toLowerCase());
+                });
+            });
+        }
+        else {
+            swal("Máy bạn chưa có Metamask, cài đặt Metamask để đăng nhập vào hệ thống")
+                .then((value) => {
+                    window.open("https://metamask.io/", "_blank");
+                });
+        }
+    }
+
+    // THEM THONG TIN:
+    function ThemThongTinLienHe(event) {
+        event.preventDefault();
+
+        let masv = $("#masv").val();
+        let dienThoai = $("#dien-thoai").val();
+        let email = $("#email").val();
+        let kiTucXa = $("#ki-tuc-xa").val();
+
+        BASIC_CONTRACT.methods.SuaThongTinLienHe(masv, dienThoai, email, kiTucXa)
+            .send({ from: currentUser })
+            .on("confirmation", function () {
+                // clear textbox:
+                $("#masv").val("");
+                $("#dien-thoai").val("");
+                $("#email").val("");
+                $("#ki-tuc-xa").val("");
+                // notify to user:
+                swal("Thành công", "", "success");
+            });
+    }
+
+    // LAY THONG TIN:
+    function getData() {
+        fetch(SERVER_URL + "/ethereum/student/detail?id=" + id)
+            .then(response => {
+                response.json()
+                    .then(result => {
+                        if (!result.thongTinCoBan.HoTen) {
+                            alert("Mã sinh viên không tồn tại trong hệ thống");
+                            return;
+                        }
+                        $("#masv").val(id);
+
+                        $("#dien-thoai").val(result.thongTinLienHe.DienThoai || "Chưa cập nhật");
+                        $("#email").val(result.thongTinLienHe.Email || "Chưa cập nhật");
+                        $("#ki-tuc-xa").val(result.thongTinLienHe.KiTucXa || "Chưa cập nhật");
+                    });
+            });
+    }
+
+    initWeb3();
+    if (id) getData();
+</script>
+
+</html>

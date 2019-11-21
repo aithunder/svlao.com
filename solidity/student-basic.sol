@@ -1,11 +1,5 @@
 pragma solidity >=0.5.3;
 
-/**
- * - only owner (admin) can edit information.
- * - to insert other information, the basic information of a student must not be null.
- * 
- **/
-
 contract SinhVien {
     address Root;
     address public Owner;
@@ -44,11 +38,14 @@ contract SinhVien {
 	}
 	mapping(string => ThongTinKhac) public CacThongTinKhac;
 	
-	struct ThongTinDiem {
-	    string Ten;
-	    string KetQua;
+	struct ThongTinDoan {
+	    string DoanThanhNien;
+	    string LienDoan;
+	    string HoiPhuNu;
+	    string DangVienDuBi;
+	    string DangVien;
 	}
-	mapping(string => mapping(string => ThongTinDiem)) public CacThongTinDiem;
+	mapping(string => ThongTinDoan) public CacThongTinDoan;
 	
 	mapping(string => string) public CacHinhDaiDien;
 	
@@ -56,13 +53,12 @@ contract SinhVien {
 	event ThemThongTinKhoaHoc(string maSv);
 	event ThemThongTinLienHe(string maSv);
 	event ThemThongTinKhac(string maSv);
-	event ThemThongTinDiem(string masv, string maMonHoc);
 	
 	event CapNhatThongTinCoBan(string maSV, string hoTen, string ngaySinh, string truong);
 	event CapNhatThongTinKhoaHoc(string maSV, string capHoc, string nganh, string khoaHoc, string loaiHocBong, string namNhapHoc, string namKetThuc);
 	event CapNhatThongTinLienHe(string maSV, string dienThoai, string email, string kiTucXa);
 	event CapNhatThongTinKhac(string maSV, string congViecChinh, string soThongTuLao, string soThongTuVN, string ghiChu);
-	event CapNhatThongTinDiem(string masv, string maMonHoc, string ten, string ketQua);
+	event CapNhatThongTinDoan(string masv, string doanThanhNien, string lienDoan, string hoiPhuNu, string dangVienDuBi, string dangVien);
 	
 	constructor(address ownerAddress) public {
 	    Root = msg.sender;
@@ -107,12 +103,9 @@ contract SinhVien {
 	    CacThongTinKhac[maSV] = ThongTinKhac(congViecChinh, soThongTuLao, soThongTuVN, ghiChu);
 	}
 	
-	function SuaThongTinDiem(string memory maSV, string memory maMonHoc, string memory ten, string memory ketQua) public OnlyOwner {
-	    require(bytes(CacThongTinCoBan[maSV].HoTen).length != 0);
-	    if(bytes(CacThongTinDiem[maSV][maMonHoc].Ten).length == 0)
-	        emit ThemThongTinDiem(maSV, maMonHoc);
-        else emit CapNhatThongTinDiem(maSV, maMonHoc, ten, ketQua);
-	    CacThongTinDiem[maSV][maMonHoc] = ThongTinDiem(ten, ketQua);
+	function SuaThongTinDoan(string memory maSV, string memory doanThanhNien, string memory lienDoan, string memory hoiPhuNu, string memory dangVienDuBi, string memory dangVien) public OnlyOwner {
+	    CacThongTinDoan[maSV] = ThongTinDoan(doanThanhNien, lienDoan, hoiPhuNu, dangVienDuBi, dangVien);
+	    emit CapNhatThongTinDoan(maSV, doanThanhNien, lienDoan, hoiPhuNu, dangVienDuBi, dangVien);
 	}
 	
 	function SuaHinhDaiDien(string memory maSV, string memory duongDan) public OnlyOwner {
