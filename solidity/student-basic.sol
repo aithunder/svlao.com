@@ -1,3 +1,4 @@
+
 pragma solidity >=0.5.3;
 
 contract SinhVien {
@@ -5,6 +6,7 @@ contract SinhVien {
     address public Owner;
     uint public TongSinhVien = 0;
     mapping (uint => string) public CacMaSinhVien;
+    mapping (string => string) public CacTenSinhVien;
     
     struct ThongTinCoBan {
 		string HoTen;
@@ -73,6 +75,7 @@ contract SinhVien {
 	function SuaThongTinCoBan(string memory maSV, string memory hoTen, string memory ngaySinh, string memory truong) public OnlyOwner {
 	    if(bytes(CacThongTinCoBan[maSV].HoTen).length == 0) {
 	        CacMaSinhVien[TongSinhVien++] = maSV;
+	        CacTenSinhVien[maSV] = hoTen;
 	        emit ThemThongTinCoBan(maSV);
 	    }
 	    else emit CapNhatThongTinCoBan(maSV, hoTen, ngaySinh, truong);
