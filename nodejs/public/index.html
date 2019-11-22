@@ -149,13 +149,13 @@
                         <!-- total mark -->
                         <!-- <div class="col-lg-4"> -->
                         <div class="panel panel-info">
-                            <div class="panel-heading">Tổng điểm</div>
+                            <div class="panel-heading">Tổng điểm trung bình</div>
                             <div class="panel-body" style="padding: 0;">
                                 <div class="table-responsive">
                                     <table class="table">
                                         <tbody>
                                             <tr>
-                                                <td>Tổng điểm</td>
+                                                <td>Tổng điểm trung bình</td>
                                                 <td id="tong-diem">0</td>
                                             </tr>
                                         </tbody>
@@ -373,6 +373,7 @@
                         </tr>`;
                         totalMark += parseInt(subject.value);
                     });
+                    totalMark/=5;
                     $("#table-diem").find("tbody").html(content);
                     $("#tong-diem").html(totalMark);
                 });
